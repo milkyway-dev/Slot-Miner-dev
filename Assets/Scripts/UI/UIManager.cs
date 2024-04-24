@@ -97,6 +97,8 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        Application.ExternalEval("OnAppReady()");
+
         if (Menu_Button) Menu_Button.onClick.RemoveAllListeners();
         if (Menu_Button) Menu_Button.onClick.AddListener(OpenMenu);
 
