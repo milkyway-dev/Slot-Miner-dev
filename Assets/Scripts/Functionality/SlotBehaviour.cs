@@ -174,8 +174,8 @@ public class SlotBehaviour : MonoBehaviour
         IsAutoSpin = !IsAutoSpin;
         if(IsAutoSpin)
         {
-            if (AutoSpin_Image) AutoSpin_Image.sprite = AutoSpinHover_Sprite;
-            if(AutoSpinRoutine != null)
+            AutoSpin_Image.color = new Color32(150, 150, 150,255);
+            if (AutoSpinRoutine != null)
             {
                 StopCoroutine(AutoSpinRoutine);
                 AutoSpinRoutine = null;
@@ -184,7 +184,7 @@ public class SlotBehaviour : MonoBehaviour
         }
         else
         {
-            if (AutoSpin_Image) AutoSpin_Image.sprite = AutoSpin_Sprite;
+            AutoSpin_Image.color = new Color32(255, 255, 255,255);
             if (AutoSpinRoutine != null)
             {
                 StopCoroutine(AutoSpinRoutine);
@@ -198,7 +198,7 @@ public class SlotBehaviour : MonoBehaviour
         while(true)
         {
             StartSlots(true);
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(5);
         }
     }
 
@@ -501,7 +501,7 @@ public class SlotBehaviour : MonoBehaviour
         }
 
         if (SlotStart_Button) SlotStart_Button.interactable = false;
-        if (AutoSpin_Button) AutoSpin_Button.interactable = false;
+        //if (AutoSpin_Button) AutoSpin_Button.interactable = false;
 
         if (TempList.Count > 0)
         {
@@ -538,9 +538,11 @@ public class SlotBehaviour : MonoBehaviour
         GenerateMatrix(SocketManager.tempresult.StopList);
         CheckPayoutLineBackend(SocketManager.tempresult.resultLine, SocketManager.tempresult.x_animResult, SocketManager.tempresult.y_animResult);
         KillAllTweens();
-        if (SlotStart_Button) SlotStart_Button.interactable = true;
-        if(!IsAutoSpin)
+        if (!IsAutoSpin) {
+            if (SlotStart_Button) SlotStart_Button.interactable = true;
+        }
         if (AutoSpin_Button) AutoSpin_Button.interactable = true;
+
     }
 
     //start the icons animation
