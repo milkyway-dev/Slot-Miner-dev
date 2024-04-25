@@ -94,10 +94,13 @@ public class UIManager : MonoBehaviour
     private bool isMusic = true;
     private bool isSound = true;
 
-
-    private void Start()
+    private void Awake()
     {
         Application.ExternalEval("OnAppReady()");
+    }
+    private void Start()
+    {
+       
 
         if (Menu_Button) Menu_Button.onClick.RemoveAllListeners();
         if (Menu_Button) Menu_Button.onClick.AddListener(OpenMenu);

@@ -185,6 +185,9 @@ public class SlotBehaviour : MonoBehaviour
         else
         {
             AutoSpin_Image.color = new Color32(255, 255, 255,255);
+            if (SlotStart_Button) SlotStart_Button.interactable = true;
+            if (BetMinus_Button) BetMinus_Button.interactable = true;
+            if (BetPlus_Button) BetPlus_Button.interactable = true;
             if (AutoSpinRoutine != null)
             {
                 StopCoroutine(AutoSpinRoutine);
@@ -228,6 +231,7 @@ public class SlotBehaviour : MonoBehaviour
         List<int> y_points = null;
         x_points = x_string[LineID]?.Split(',')?.Select(Int32.Parse)?.ToList();
         y_points = y_string[LineID]?.Split(',')?.Select(Int32.Parse)?.ToList();
+        print(y_points);
         PayCalculator.GeneratePayoutLinesBackend(x_points, y_points, x_points.Count, true);
     }
 
@@ -500,8 +504,7 @@ public class SlotBehaviour : MonoBehaviour
             }
         }
 
-        if (SlotStart_Button) SlotStart_Button.interactable = false;
-        //if (AutoSpin_Button) AutoSpin_Button.interactable = false;
+
 
         if (TempList.Count > 0)
         {
@@ -519,6 +522,11 @@ public class SlotBehaviour : MonoBehaviour
     //manage the Routine for spinning of the slots
     private IEnumerator TweenRoutine()
     {
+        if (SlotStart_Button) SlotStart_Button.interactable = false;
+        if (AutoSpin_Button) AutoSpin_Button.interactable = false;
+        if (BetMinus_Button) BetMinus_Button.interactable = false;
+        if (BetPlus_Button) BetPlus_Button.interactable = false;
+
         for (int i = 0; i < numberOfSlots; i++)
         {
             InitializeTweening(Slot_Transform[i]);
@@ -540,6 +548,8 @@ public class SlotBehaviour : MonoBehaviour
         KillAllTweens();
         if (!IsAutoSpin) {
             if (SlotStart_Button) SlotStart_Button.interactable = true;
+            if (BetMinus_Button) BetMinus_Button.interactable = true;
+            if (BetPlus_Button) BetPlus_Button.interactable = true;
         }
         if (AutoSpin_Button) AutoSpin_Button.interactable = true;
 
