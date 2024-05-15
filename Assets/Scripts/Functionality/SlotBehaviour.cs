@@ -60,12 +60,7 @@ public class SlotBehaviour : MonoBehaviour
     private TMP_Text Lines_text;
     [SerializeField]
     private TMP_Text TotalWin_text;
-    //[SerializeField]
-    //private Sprite AutoSpinHover_Sprite;
-    //[SerializeField]
-    //private Sprite AutoSpin_Sprite;
-    //[SerializeField]
-    //private Image AutoSpin_Image;
+    
     [SerializeField]
     private Button MaxBet_Button;
     [SerializeField]
@@ -79,14 +74,7 @@ public class SlotBehaviour : MonoBehaviour
 
     [Header("Audio Management")]
     [SerializeField] private AudioController audioController;
-    //[SerializeField]
-    //private AudioSource _audioSource;
-    //[SerializeField]
-    //private AudioClip _spinSound;
-    //[SerializeField]
-    //private AudioClip _lossSound;
-    //[SerializeField]
-    //private AudioClip[] _winSounds;
+   
 
     int tweenHeight = 0;  //calculate the height at which tweening is done
 
@@ -154,13 +142,10 @@ public class SlotBehaviour : MonoBehaviour
             if (AutoSpinStop_Button) AutoSpinStop_Button.gameObject.SetActive(true);
             if (AutoSpin_Button) AutoSpin_Button.gameObject.SetActive(false);
 
-            //if (AutoSpin_Image) AutoSpin_Image.sprite = AutoSpinHover_Sprite;
             if (AutoSpinRoutine != null)
             {
                 StopCoroutine(AutoSpinRoutine);
                 AutoSpinRoutine = null;
-                //StopCoroutine(tweenroutine);
-                //tweenroutine = null;
             }
             AutoSpinRoutine = StartCoroutine(AutoSpinCoroutine());
 
@@ -394,7 +379,7 @@ public class SlotBehaviour : MonoBehaviour
 
         if (!autoSpin)
         {
-            //if (AutoSpin_Image) AutoSpin_Image.sprite = AutoSpin_Sprite;
+            
             if (AutoSpinRoutine != null)
             {
                 StopCoroutine(AutoSpinRoutine);
