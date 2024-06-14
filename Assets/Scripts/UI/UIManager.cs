@@ -47,6 +47,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private RectTransform Paytable_RT;
 
+    [SerializeField] private Button exitButton;
+
     [Header("Popus UI")]
     [SerializeField]
     private GameObject MainPopup_Object;
@@ -90,6 +92,7 @@ public class UIManager : MonoBehaviour
     private GameObject SoundOff_Object;
 
     [SerializeField] private AudioController audioController;
+    [SerializeField] private SlotBehaviour slotBehaviour;
 
     private bool isMusic = true;
     private bool isSound = true;
@@ -142,6 +145,9 @@ public class UIManager : MonoBehaviour
 
         if (Music_Button) Music_Button.onClick.RemoveAllListeners();
         if (Music_Button) Music_Button.onClick.AddListener(ToggleMusic);
+
+        if (exitButton) exitButton.onClick.RemoveAllListeners();
+        if (exitButton) exitButton.onClick.AddListener(CallOnExitFunction);
 
     }
 
@@ -197,6 +203,14 @@ public class UIManager : MonoBehaviour
              if (Settings_Object) Settings_Object.SetActive(false);
          });
     }
+
+    private void CallOnExitFunction()
+    {
+        print("close");
+        slotBehaviour.CallCloseSocket();
+        Application.ExternalCall("window.parent.postMessage", "onExit", "*");
+    }
+
 
     private void OpenPopup(GameObject Popup)
     {
