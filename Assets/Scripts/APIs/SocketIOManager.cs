@@ -10,12 +10,13 @@ using System.Linq;
 using Newtonsoft.Json;
 using Best.SocketIO;
 using Best.SocketIO.Events;
-
+using Newtonsoft.Json.Linq;
+using System.Runtime.Serialization;
 public class SocketIOManager : MonoBehaviour
 {
     [SerializeField]
     private SlotBehaviour slotManager;
-
+    [SerializeField] private UIManager uIManager;
     internal GameData initialData = null;
     internal UIData initUIData = null;
     internal GameData resultData = null;
@@ -38,6 +39,7 @@ public class SocketIOManager : MonoBehaviour
 
     protected string gameID = "SL-MNR";
 
+    internal bool isLoading = true;
     private void Start()
     {
         //OpenWebsocket();
@@ -129,6 +131,19 @@ public class SocketIOManager : MonoBehaviour
         SetupSocketManager(options);
     }
 
+    private void OnSocketState(bool state)
+    {
+        if (state)
+        {
+            Debug.Log("my state is " + state);
+            InitRequest("AUTH");
+        }
+        else
+        {
+
+        }
+    }
+
     private void SetupSocketManager(SocketOptions options)
     {
         // Create and setup SocketManager
@@ -139,7 +154,10 @@ public class SocketIOManager : MonoBehaviour
         this.manager.Socket.On<string>(SocketIOEventTypes.Disconnect, OnDisconnected);
         this.manager.Socket.On<string>(SocketIOEventTypes.Error, OnError);
         this.manager.Socket.On<string>("message", OnListenEvent);
-
+        this.manager.Socket.On<bool>("socketState", OnSocketState);
+        this.manager.Socket.On<string>("internalError", OnSocketError);
+        this.manager.Socket.On<string>("alert", OnSocketAlert);
+        this.manager.Socket.On<string>("AnotherDevice", OnSocketOtherDevice);
         // Start connecting to the server
         this.manager.Open();
     }
@@ -148,12 +166,48 @@ public class SocketIOManager : MonoBehaviour
     void OnConnected(ConnectResponse resp)
     {
         Debug.Log("Connected!");
-        InitRequest("AUTH");
+        SendPing();
+        //InitRequest("AUTH");
+    }
+
+    private void SendPing()
+    {
+        InvokeRepeating("AliveRequest", 0f, 3f);
+    }
+    private void OnSocketAlert(string data)
+    {
+        Debug.Log("Received alert with data: " + data);
+        // AliveRequest("YES I AM ALIVE");
+    }
+
+    private void AliveRequest()
+    {
+        InitData message = new InitData();
+        if (this.manager.Socket != null && this.manager.Socket.IsOpen)
+        {
+            // this.manager.Socket.Emit(eventName);
+            this.manager.Socket.Emit("YES I AM ALIVE");
+            Debug.Log("JSON data sent: alive");
+        }
+        else
+        {
+            Debug.LogWarning("Socket is not connected.");
+        }
+    }
+    private void OnSocketOtherDevice(string data)
+    {
+        Debug.Log("Received Device Error with data: " + data);
+        uIManager.ADfunction();
+    }
+    private void OnSocketError(string data)
+    {
+        Debug.Log("Received error with data: " + data);
     }
 
     private void OnDisconnected(string response)
     {
         Debug.Log("Disconnected from the server");
+        uIManager.DisconnectionPopup(false);
     }
 
     private void OnError(string response)
@@ -244,13 +298,15 @@ public class SocketIOManager : MonoBehaviour
             slotManager.LayoutReset(i);
         }
 
+        print("LineIds.Count " + LineIds.Count);
+
         for (int i = 0; i < LineIds.Count; i++)
         {
             slotManager.FetchLines(LineIds[i], i);
         }
 
         slotManager.SetInitialUI();
-
+        isLoading = false;
         Application.ExternalCall("window.parent.postMessage", "OnEnter", "*");
     }
 
@@ -353,7 +409,7 @@ public class SocketIOManager : MonoBehaviour
 public class BetData
 {
     public double currentBet;
-    //public double TotalLines;
+    public double currentLines = 40;
 }
 
 [Serializable]
@@ -389,7 +445,7 @@ public class GameData
 {
     public List<List<string>> Reel { get; set; }
     public List<List<int>> Lines { get; set; }
-    public List<int> Bets { get; set; }
+    public List<double> Bets { get; set; }
     public bool canSwitchLines { get; set; }
     public List<int> LinesCount { get; set; }
     public List<int> autoSpin { get; set; }
@@ -440,23 +496,34 @@ public class Paylines
 [Serializable]
 public class Symbol
 {
-    public Multiplier multiplier { get; set; }
-}
+    public int ID { get; set; }
+    public string Name { get; set; }
+    [JsonProperty("multiplier")]
+    public object MultiplierObject { get; set; }
 
-[Serializable]
-public class Multiplier
-{
-    [JsonProperty("5x")]
-    public double _5x { get; set; }
+    // This property will hold the properly deserialized list of lists of integers
+    [JsonIgnore]
+    public List<List<int>> Multiplier { get; private set; }
 
-    [JsonProperty("4x")]
-    public double _4x { get; set; }
-
-    [JsonProperty("3x")]
-    public double _3x { get; set; }
-
-    [JsonProperty("2x")]
-    public double _2x { get; set; }
+    // Custom deserialization method to handle the conversion
+    [OnDeserialized]
+    internal void OnDeserializedMethod(StreamingContext context)
+    {
+        // Handle the case where multiplier is an object (empty in JSON)
+        if (MultiplierObject is JObject)
+        {
+            Multiplier = new List<List<int>>();
+        }
+        else
+        {
+            // Deserialize normally assuming it's an array of arrays
+            Multiplier = JsonConvert.DeserializeObject<List<List<int>>>(MultiplierObject.ToString());
+        }
+    }
+    public object defaultAmount { get; set; }
+    public object symbolsCount { get; set; }
+    public object increaseValue { get; set; }
+    public int freeSpin { get; set; }
 }
 
 [Serializable]
@@ -464,7 +531,8 @@ public class PlayerData
 {
     public double Balance { get; set; }
     public double haveWon { get; set; }
-}
+    public double currentWining { get; set; }
 
+}
 
 
