@@ -42,7 +42,6 @@ public class UIManager : MonoBehaviour
     private RectTransform Paytable_RT;
 
     [SerializeField] private TMP_Text[] SymbolsText;
-    [SerializeField] private TMP_Text FreeSpin_Text;
     [SerializeField] private TMP_Text Jackpot_Text;
     // [SerializeField] private Button exitButton;
 
@@ -82,6 +81,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button cancel_button;
     [SerializeField] private Button Quit_button;
 
+    [Header("LowBalance Popup")]
+    [SerializeField]
+    private Button LBExit_Button;
+    [SerializeField]
+    private GameObject LBPopup_Object;
+
     [Header("Disconnection Popup")]
     [SerializeField] private Button CloseDisconnect_Button;
     [SerializeField] private GameObject DisconnectPopup_Object;
@@ -101,7 +106,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite BigWin_Sprite;
     [SerializeField] private Sprite MegaWin_Sprite;
 
-
     [Header("Splash Screen")]
     [SerializeField] private GameObject spalsh_screen;
     [SerializeField] private Image progressbar;
@@ -117,6 +121,7 @@ public class UIManager : MonoBehaviour
     private bool isMusic = true;
     private bool isSound = true;
     private bool isExit = false;
+
     private void Awake()
     {
         if (spalsh_screen) spalsh_screen.SetActive(true);
@@ -187,6 +192,8 @@ public class UIManager : MonoBehaviour
         if (Setting_button) Setting_button.onClick.RemoveAllListeners();
         if (Setting_button) Setting_button.onClick.AddListener(delegate { OpenPopup(settingObject); });
 
+        if (LBExit_Button) LBExit_Button.onClick.RemoveAllListeners();
+        if (LBExit_Button) LBExit_Button.onClick.AddListener(delegate { ClosePopup(LBPopup_Object); });
 
         if (Setting_exit_button) Setting_exit_button.onClick.RemoveAllListeners();
         if (Setting_exit_button) Setting_exit_button.onClick.AddListener(delegate { ClosePopup(settingObject); });
@@ -260,8 +267,24 @@ public class UIManager : MonoBehaviour
     //      });
     // }
 
-    internal void InitialiseUIData(Paylines symbolsText)
+    internal void LowBalPopup()
     {
+        OpenPopup(LBPopup_Object);
+    }
+
+    internal void InitialiseUIData(string SupportUrl, string AbtImgUrl, string TermsUrl, string PrivacyUrl, Paylines symbolsText)
+    {
+        //if (Support_Button) Support_Button.onClick.RemoveAllListeners();
+        //if (Support_Button) Support_Button.onClick.AddListener(delegate { UrlButtons(SupportUrl); });
+
+        //if (Terms_Button) Terms_Button.onClick.RemoveAllListeners();
+        //if (Terms_Button) Terms_Button.onClick.AddListener(delegate { UrlButtons(TermsUrl); });
+
+        //if (Privacy_Button) Privacy_Button.onClick.RemoveAllListeners();
+        //if (Privacy_Button) Privacy_Button.onClick.AddListener(delegate { UrlButtons(PrivacyUrl); });
+
+        //StartCoroutine(DownloadImage(AbtImgUrl));
+
         PopulateSymbolsPayout(symbolsText);
     }
 
@@ -290,11 +313,6 @@ public class UIManager : MonoBehaviour
 
         for (int i = 0; i < paylines.symbols.Count; i++)
         {
-            if (paylines.symbols[i].Name.ToUpper() == "FREESPIN")
-            {
-                if (FreeSpin_Text) FreeSpin_Text.text = "Free Spin: Activates " + paylines.symbols[i].Multiplier[0][1] + ", " + paylines.symbols[i].Multiplier[1][1] + ", or " + paylines.symbols[i].Multiplier[2][1] + " free spins when 5, 4, or 3 symbols appear on pay lines.";
-                continue;
-            }
             if (paylines.symbols[i].Name.ToUpper() == "JACKPOT")
             {
                 if (Jackpot_Text) Jackpot_Text.text = "Jackpot: Mega win triggered by 5 Jackpot symbols on a pay line.\nPayout: <color=yellow>" + paylines.symbols[i].defaultAmount;
