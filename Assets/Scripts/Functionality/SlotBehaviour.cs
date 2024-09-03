@@ -57,7 +57,8 @@ public class SlotBehaviour : MonoBehaviour
     private TMP_Text Balance_text;
     [SerializeField]
     private TMP_Text TotalBet_text;
-    [SerializeField] private TMP_Text BetPerLine_text;
+    [SerializeField]
+    private TMP_Text BetPerLine_text;
     [SerializeField]
     private TMP_Text Lines_text;
     [SerializeField]
@@ -104,17 +105,18 @@ public class SlotBehaviour : MonoBehaviour
 
     Coroutine AutoSpinRoutine = null;
     Coroutine tweenroutine = null;
+    Coroutine FreeSpinRoutine = null;
 
     bool IsAutoSpin = false;
     bool IsSpinning = false;
+    bool IsFreeSpin = false;
     internal bool CheckPopups = false;
-
     private int BetCounter = 0;
     private int LineCounter = 0;
     private double currentBalance = 0;
     private double currentTotalBet = 0;
     protected int Lines = 20;
-
+    private int FreeSpins = 0;
 
     private void Start()
     {
@@ -222,7 +224,41 @@ public class SlotBehaviour : MonoBehaviour
         //StaticLine_Objects[count].SetActive(true);
     }
 
+    #region FreeSpin
+    internal void FreeSpin(int spins)
+    {
+        if (!IsFreeSpin)
+        {
+            //if (FSnum_text) FSnum_text.text = spins.ToString();
+            //if (FSBoard_Object) FSBoard_Object.SetActive(true);
+            IsFreeSpin = true;
+            ToggleButtonGrp(false);
 
+            if (FreeSpinRoutine != null)
+            {
+                StopCoroutine(FreeSpinRoutine);
+                FreeSpinRoutine = null;
+            }
+            FreeSpinRoutine = StartCoroutine(FreeSpinCoroutine(spins));
+        }
+    }
+
+    private IEnumerator FreeSpinCoroutine(int spinchances)
+    {
+        int i = 0;
+        while (i < spinchances)
+        {
+            StartSlots(IsAutoSpin);
+            yield return tweenroutine;
+            yield return new WaitForSeconds(2);
+            i++;
+            //if (FSnum_text) FSnum_text.text = (spinchances - i).ToString();
+        }
+        //if (FSBoard_Object) FSBoard_Object.SetActive(false);
+        ToggleButtonGrp(true);
+        IsFreeSpin = false;
+    }
+    #endregion
 
     internal void GenerateStaticLine(TMP_Text LineID_Text)
     {
@@ -393,7 +429,7 @@ public class SlotBehaviour : MonoBehaviour
     //manage the Routine for spinning of the slots
     private IEnumerator TweenRoutine()
     {
-        if(currentBalance < currentTotalBet)
+        if(currentBalance < currentTotalBet && !IsFreeSpin)
         {
             CompareBalance();
             StopAutoSpin();
@@ -411,6 +447,11 @@ public class SlotBehaviour : MonoBehaviour
         {
             InitializeTweening(Slot_Transform[i]);
             yield return new WaitForSeconds(0.1f);
+        }
+
+        if (!IsFreeSpin)
+        {
+            BalanceDeduction();
         }
 
         SocketManager.AccumulateResult(BetCounter);
@@ -449,9 +490,8 @@ public class SlotBehaviour : MonoBehaviour
 
         CheckPopups = true;
 
-        if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString("f2");
-        if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("f2");
-        currentBalance = SocketManager.playerdata.Balance;
+        //if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString("f2");
+        //if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("f2");
 
         if (SocketManager.resultData.jackpot > 0)
         {
@@ -474,6 +514,7 @@ public class SlotBehaviour : MonoBehaviour
         yield return new WaitUntil(() => !CheckPopups);
         if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString();
         if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString();
+        currentBalance = SocketManager.playerdata.Balance;
 
         if (!IsAutoSpin)
         {
@@ -484,6 +525,25 @@ public class SlotBehaviour : MonoBehaviour
         {
             yield return new WaitForSeconds(2f);
             IsSpinning = false;
+        }
+
+        if(SocketManager.resultData.freeSpins.isNewAdded)
+        {
+            if(IsFreeSpin)
+            {
+                IsFreeSpin = false;
+                if (FreeSpinRoutine != null)
+                {
+                    StopCoroutine(FreeSpinRoutine);
+                    FreeSpinRoutine = null;
+                }
+            }
+            uiManager.FreeSpinProcess((int)SocketManager.resultData.freeSpins.count);
+            if (IsAutoSpin)
+            {
+                StopAutoSpin();
+                yield return new WaitForSeconds(0.1f);
+            }
         }
     }
 
