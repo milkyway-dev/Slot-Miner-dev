@@ -189,7 +189,8 @@ public class SlotBehaviour : MonoBehaviour
     private IEnumerator StopAutoSpinCoroutine()
     {
         yield return new WaitUntil(() => !IsSpinning);
-        ToggleButtonGrp(true);
+        if(!IsFreeSpin)
+            ToggleButtonGrp(true);
         if (AutoSpinRoutine != null || tweenroutine != null)
         {
             StopCoroutine(AutoSpinRoutine);
@@ -250,13 +251,14 @@ public class SlotBehaviour : MonoBehaviour
         {
             StartSlots(IsAutoSpin);
             yield return tweenroutine;
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(0.6f);
             i++;
+            uiManager.UpdateFreeSpinData(1 - ((float)i / (float)spinchances), spinchances - i);
             //if (FSnum_text) FSnum_text.text = (spinchances - i).ToString();
         }
         //if (FSBoard_Object) FSBoard_Object.SetActive(false);
-        ToggleButtonGrp(true);
         IsFreeSpin = false;
+        ToggleButtonGrp(true);
     }
     #endregion
 
@@ -481,7 +483,7 @@ public class SlotBehaviour : MonoBehaviour
             yield return StopTweening(5, Slot_Transform[i], i);
         }
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.6f);
         if(audioController) audioController.StopSpinAudio();
 
         CheckPayoutLineBackend(SocketManager.resultData.linesToEmit, SocketManager.resultData.FinalsymbolsToEmit, SocketManager.resultData.jackpot);
@@ -516,7 +518,7 @@ public class SlotBehaviour : MonoBehaviour
         if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString();
         currentBalance = SocketManager.playerdata.Balance;
 
-        if (!IsAutoSpin)
+        if (!IsAutoSpin && !IsFreeSpin)
         {
             ToggleButtonGrp(true);
             IsSpinning = false;

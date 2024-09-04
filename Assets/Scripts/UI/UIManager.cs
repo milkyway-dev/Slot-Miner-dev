@@ -121,6 +121,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform freeSpinBarHandle;
     [SerializeField] private TMP_Text freeSpinCount;
     [SerializeField] private TMP_Text FreeSpin_Text;
+    [SerializeField] private GameObject FreeSpinPopup_Object;
+    //[SerializeField] private Button FreeSpin_Button;
 
 
     private bool isOpen;
@@ -129,6 +131,7 @@ public class UIManager : MonoBehaviour
     private bool isExit = false;
 
     private int FreeSpins = 0;
+    private int PopupActivatedCount = 0;
 
     private void Awake()
     {
@@ -388,31 +391,30 @@ public class UIManager : MonoBehaviour
         freeSpinCount.text = count.ToString();
     }
 
-    internal void SetFreeSpinData(int count)
-    {
+    //internal void SetFreeSpinData(int count)
+    //{
 
-        freeSpinBar.DOFillAmount(1, 0.2f).SetEase(Ease.Linear);
-        freeSpinBarHandle.DOAnchorPosX(510, 0.2f).SetEase(Ease.Linear);
-        freeSpinCount.text = count.ToString();
-    }
+    //    freeSpinBar.DOFillAmount(1, 0.2f).SetEase(Ease.Linear);
+    //    freeSpinBarHandle.DOAnchorPosX(510, 0.2f).SetEase(Ease.Linear);
+    //    freeSpinCount.text = count.ToString();
+    //}
 
     private void StartFreeSpins(int spins)
     {
-        if (MainPopup_Object) MainPopup_Object.SetActive(false);
-        //if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(false);
+        //if (MainPopup_Object) MainPopup_Object.SetActive(false);
+        if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(false);
         freeSpinBar.DOFillAmount(1, 0.2f).SetEase(Ease.Linear);
         freeSpinBarHandle.DOAnchorPosX(510, 0.2f).SetEase(Ease.Linear);
         freeSpinCount.text = spins.ToString();
-
         slotBehaviour.FreeSpin(spins);
     }
 
     internal void FreeSpinProcess(int spins)
     {
         FreeSpins = spins;
-        //if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(true);
+        if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(true);
         //if (Free_Text) Free_Text.text = spins.ToString() + " Free spins awarded.";
-        if (MainPopup_Object) MainPopup_Object.SetActive(true);
+        //if (MainPopup_Object) MainPopup_Object.SetActive(true);
         StartFreeSpins(spins);
     }
 
@@ -422,14 +424,15 @@ public class UIManager : MonoBehaviour
         if (jackpot)
         {
             if (jackpot_Object) jackpot_Object.SetActive(true);
+            OpenPopup(jackpot_Object);
         }
         else
         {
             if (WinPopup_Object) WinPopup_Object.SetActive(true);
-
+            OpenPopup(WinPopup_Object);
         }
 
-        if (MainPopup_Object) MainPopup_Object.SetActive(true);
+        //if (MainPopup_Object) MainPopup_Object.SetActive(true);
 
         DOTween.To(() => initAmount, (val) => initAmount = val, (int)amount, 5f).OnUpdate(() =>
         {
@@ -492,16 +495,39 @@ public class UIManager : MonoBehaviour
     private void OpenPopup(GameObject Popup)
     {
         if (audioController) audioController.PlayButtonAudio();
-        if (MainPopup_Object) MainPopup_Object.SetActive(true);
         if (Popup) Popup.SetActive(true);
+        PopupActivatedCount++;
+        Debug.Log(string.Concat("<color=red><b>", PopupActivatedCount, "</b></color>"));
+        if (MainPopup_Object) MainPopup_Object.SetActive(true);
     }
+
+    //private void ClosePopup(GameObject Popup)
+    //{
+    //    if (audioController) audioController.PlayButtonAudio();
+    //    if (Popup) Popup.SetActive(false);
+    //    if (!DisconnectPopup_Object.activeSelf)
+    //    {
+    //        if (MainPopup_Object) MainPopup_Object.SetActive(false);
+    //    }
+    //}
 
     private void ClosePopup(GameObject Popup)
     {
         if (audioController) audioController.PlayButtonAudio();
         if (Popup) Popup.SetActive(false);
-        if(!DisconnectPopup_Object.activeSelf)
-        if (MainPopup_Object) MainPopup_Object.SetActive(false);
+        if(PopupActivatedCount > 0)
+        {
+            PopupActivatedCount--;
+            Debug.Log(string.Concat("<color=cyan><b>", PopupActivatedCount, "</b></color>"));
+        }
+
+        if(PopupActivatedCount <= 0)
+        {
+            if (!DisconnectPopup_Object.activeSelf)
+            {
+                if (MainPopup_Object) MainPopup_Object.SetActive(false);
+            }
+        }
     }
 
     private void ToggleMusic()
@@ -517,7 +543,5 @@ public class UIManager : MonoBehaviour
         float value = SoundSlider.value;
         if (audioController) audioController.ToggleMute(value, "button");
         if (audioController) audioController.ToggleMute(value, "wl");
-
-
     }
 }
