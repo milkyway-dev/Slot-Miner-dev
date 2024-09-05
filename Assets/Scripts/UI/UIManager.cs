@@ -121,7 +121,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform freeSpinBarHandle;
     [SerializeField] private TMP_Text freeSpinCount;
     [SerializeField] private TMP_Text FreeSpin_Text;
-    [SerializeField] private GameObject FreeSpinPopup_Object;
+    [SerializeField] protected internal GameObject FreeSpinPopup_Object;
     //[SerializeField] private Button FreeSpin_Button;
 
 
@@ -336,9 +336,16 @@ public class UIManager : MonoBehaviour
         //else
         //{
         //ClosePopup(ReconnectPopup_Object);
-        if (!isExit)
+        if (isReconnection)
         {
-            OpenPopup(DisconnectPopup_Object);
+            ClosePopup(DisconnectPopup_Object);
+        }
+        else
+        {
+            if (!isExit)
+            {
+                OpenPopup(DisconnectPopup_Object);
+            }
         }
         //}
     }
@@ -402,7 +409,7 @@ public class UIManager : MonoBehaviour
     private void StartFreeSpins(int spins)
     {
         //if (MainPopup_Object) MainPopup_Object.SetActive(false);
-        if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(false);
+        //if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(false);
         freeSpinBar.DOFillAmount(1, 0.2f).SetEase(Ease.Linear);
         freeSpinBarHandle.DOAnchorPosX(510, 0.2f).SetEase(Ease.Linear);
         freeSpinCount.text = spins.ToString();
@@ -412,7 +419,7 @@ public class UIManager : MonoBehaviour
     internal void FreeSpinProcess(int spins)
     {
         FreeSpins = spins;
-        if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(true);
+        //if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(true);
         //if (Free_Text) Free_Text.text = spins.ToString() + " Free spins awarded.";
         //if (MainPopup_Object) MainPopup_Object.SetActive(true);
         StartFreeSpins(spins);

@@ -172,6 +172,7 @@ public class SocketIOManager : MonoBehaviour
     {
         Debug.Log("Connected!");
         SendPing();
+        //uiManager.DisconnectionPopup(true);
     }
 
     private void OnDisconnected(string response)
