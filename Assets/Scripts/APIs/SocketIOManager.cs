@@ -53,7 +53,9 @@ public class SocketIOManager : MonoBehaviour
 
     private void Awake()
     {
+        //HACK: The below code is to disable the unity logs
         //Debug.unityLogger.logEnabled = false;
+
         isLoading = true;
         SetInit = false;
     }
