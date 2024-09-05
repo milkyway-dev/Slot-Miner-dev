@@ -10,7 +10,7 @@ public class AudioController : MonoBehaviour
     [SerializeField] private AudioSource audioPlayer_button;
     [SerializeField] private AudioSource audioPlayer_Spin;
 
-    [Header("clips")]
+    [Header("Clips")]
     [SerializeField] private AudioClip SpinButtonClip;
     [SerializeField] private AudioClip SpinClip;
     [SerializeField] private AudioClip Button;
@@ -68,7 +68,6 @@ public class AudioController : MonoBehaviour
     {
         if (!focus)
         {
-
             bg_adudio.Pause();
             audioPlayer_wl.Pause();
             audioPlayer_button.Pause();
@@ -76,13 +75,11 @@ public class AudioController : MonoBehaviour
         else
         {
             if (!bg_adudio.mute) bg_adudio.Play();
-            if (!audioPlayer_wl.mute) audioPlayer_wl.Play();
-            if (!audioPlayer_button.mute) audioPlayer_button.Play();
+            //if (!audioPlayer_wl.mute) audioPlayer_wl.Play();
+            //if (!audioPlayer_button.mute) audioPlayer_button.Play();
 
         }
     }
-
-
 
     internal void playBgAudio()
     {
