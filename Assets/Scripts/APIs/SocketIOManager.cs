@@ -264,14 +264,14 @@ public class SocketIOManager : MonoBehaviour
     internal void CloseSocket()
     {
         SendDataWithNamespace("EXIT");
-        DOVirtual.DelayedCall(0.1f, () =>
-        {
-            if (this.manager != null)
-            {
-                Debug.Log("Dispose my Socket");
-                this.manager.Close();
-            }
-        });
+        //DOVirtual.DelayedCall(0.1f, () =>
+        //{
+        //    if (this.manager != null)
+        //    {
+        //        Debug.Log("Dispose my Socket");
+        //        this.manager.Close();
+        //    }
+        //});
     }
 
     private void ParseResponse(string jsonObject)
@@ -316,6 +316,16 @@ public class SocketIOManager : MonoBehaviour
                     isResultdone = true;
 
                     Debug.Log(string.Concat("<color=green><b>", "Done Result Data", "</b></color>"));
+                    break;
+                }
+            case "ExitUser":
+                {
+                    if (this.manager != null)
+                    {
+                        Debug.Log("Dispose my Socket");
+                        this.manager.Close();
+                    }
+                    Application.ExternalCall("window.parent.postMessage", "onExit", "*");
                     break;
                 }
         }
