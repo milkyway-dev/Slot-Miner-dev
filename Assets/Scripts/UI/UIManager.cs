@@ -225,6 +225,12 @@ public class UIManager : MonoBehaviour
 
     }
 
+    //HACK: Something To Do Here
+    private void SimulateClickByDefault()
+    {
+
+    }
+
     internal void LowBalPopup()
     {
         OpenPopup(LBPopup_Object);

@@ -401,6 +401,7 @@ public class SlotBehaviour : MonoBehaviour
 
     private void OnApplicationFocus(bool focus)
     {
+        Debug.Log(string.Concat("<color=cyan><b>", focus, "</b></color>"));
         audioController.CheckFocusFunction(focus, CheckSpinAudio);
     }
     private void StartSlots(bool autoSpin = false)
