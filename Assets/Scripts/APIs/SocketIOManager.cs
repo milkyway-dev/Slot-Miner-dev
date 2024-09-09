@@ -13,9 +13,13 @@ using Best.SocketIO.Events;
 using Newtonsoft.Json.Linq;
 using System.Runtime.Serialization;
 using Best.HTTP.Shared;
+using System.Runtime.InteropServices;
 
 public class SocketIOManager : MonoBehaviour
 {
+    [DllImport("__Internal")]
+    private static extern void delayHideLoadingScreen();
+
     [SerializeField]
     private SlotBehaviour slotManager;
 
@@ -264,14 +268,14 @@ public class SocketIOManager : MonoBehaviour
     internal void CloseSocket()
     {
         SendDataWithNamespace("EXIT");
-        DOVirtual.DelayedCall(0.1f, () =>
-        {
-            if (this.manager != null)
-            {
-                Debug.Log("Dispose my Socket");
-                this.manager.Close();
-            }
-        });
+        //DOVirtual.DelayedCall(0.1f, () =>
+        //{
+        //    if (this.manager != null)
+        //    {
+        //        Debug.Log("Dispose my Socket");
+        //        this.manager.Close();
+        //    }
+        //});
     }
 
     private void ParseResponse(string jsonObject)
@@ -318,6 +322,16 @@ public class SocketIOManager : MonoBehaviour
                     Debug.Log(string.Concat("<color=green><b>", "Done Result Data", "</b></color>"));
                     break;
                 }
+            case "ExitUser":
+                {
+                    if (this.manager != null)
+                    {
+                        Debug.Log("Dispose my Socket");
+                        this.manager.Close();
+                    }
+                    Application.ExternalCall("window.parent.postMessage", "onExit", "*");
+                    break;
+                }
         }
     }
 
@@ -338,6 +352,10 @@ public class SocketIOManager : MonoBehaviour
         slotManager.SetInitialUI();
 
         isLoading = false;
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+        delayHideLoadingScreen();
+#endif
     }
 
     internal void AccumulateResult(double currBet)
