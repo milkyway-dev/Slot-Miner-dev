@@ -133,11 +133,11 @@ public class UIManager : MonoBehaviour
     private int FreeSpins = 0;
     private int PopupActivatedCount = 0;
 
-    private void Awake()
-    {
-        if (spalsh_screen) spalsh_screen.SetActive(true);
-        StartCoroutine(LoadingRoutine());
-    }
+    //private void Awake()
+    //{
+    //    if (spalsh_screen) spalsh_screen.SetActive(true);
+    //    StartCoroutine(LoadingRoutine());
+    //}
 
     private IEnumerator LoadingRoutine()
     {
