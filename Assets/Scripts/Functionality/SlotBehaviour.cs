@@ -121,6 +121,11 @@ public class SlotBehaviour : MonoBehaviour
     protected int Lines = 20;
     private int FreeSpins = 0;
 
+    private void Awake()
+    {
+        OnApplicationFocus(true);
+    }
+
     private void Start()
     {
         IsAutoSpin = false;
