@@ -124,6 +124,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] protected internal GameObject FreeSpinPopup_Object;
     //[SerializeField] private Button FreeSpin_Button;
 
+    [SerializeField] private Button m_AwakeGameButton;
+
 
     private bool isOpen;
     private bool isMusic = true;
@@ -138,6 +140,11 @@ public class UIManager : MonoBehaviour
     //    if (spalsh_screen) spalsh_screen.SetActive(true);
     //    StartCoroutine(LoadingRoutine());
     //}
+
+    private void Awake()
+    {
+        SimulateClickByDefault();
+    }
 
     private IEnumerator LoadingRoutine()
     {
@@ -228,7 +235,8 @@ public class UIManager : MonoBehaviour
     //HACK: Something To Do Here
     private void SimulateClickByDefault()
     {
-
+        Debug.Log("Awaken The Game...");
+        m_AwakeGameButton.onClick.Invoke();
     }
 
     internal void LowBalPopup()
