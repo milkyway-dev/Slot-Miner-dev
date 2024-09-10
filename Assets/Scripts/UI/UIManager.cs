@@ -236,6 +236,7 @@ public class UIManager : MonoBehaviour
     private void SimulateClickByDefault()
     {
         Debug.Log("Awaken The Game...");
+        m_AwakeGameButton.onClick.AddListener( () => { Debug.Log("Called The Game..."); } );
         m_AwakeGameButton.onClick.Invoke();
     }
 
