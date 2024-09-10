@@ -13,13 +13,9 @@ using Best.SocketIO.Events;
 using Newtonsoft.Json.Linq;
 using System.Runtime.Serialization;
 using Best.HTTP.Shared;
-using System.Runtime.InteropServices;
 
 public class SocketIOManager : MonoBehaviour
 {
-    [DllImport("__Internal")]
-    private static extern void delayHideLoadingScreen();
-
     [SerializeField]
     private SlotBehaviour slotManager;
 
@@ -353,9 +349,7 @@ public class SocketIOManager : MonoBehaviour
 
         isLoading = false;
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-        delayHideLoadingScreen();
-#endif
+        Application.ExternalCall("window.parent.postMessage", "OnEnter", "*");
     }
 
     internal void AccumulateResult(double currBet)
