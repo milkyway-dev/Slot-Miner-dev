@@ -123,7 +123,7 @@ public class SlotBehaviour : MonoBehaviour
 
     private void Awake()
     {
-        //OnApplicationFocus(true);
+        OnApplicationFocus(true);
     }
 
     private void Start()

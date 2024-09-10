@@ -68,14 +68,14 @@ public class AudioController : MonoBehaviour
     {
         if (!focus)
         {
-            //bg_adudio.Pause();
+            bg_adudio.Pause();
             audioPlayer_wl.Pause();
             audioPlayer_button.Pause();
             audioPlayer_Spin.Pause();
         }
         else
         {
-            //if (!bg_adudio.mute) bg_adudio.UnPause();
+            if (!bg_adudio.mute) bg_adudio.UnPause();
             if (IsSpinning)
             {
                 if (!audioPlayer_wl.mute) audioPlayer_wl.UnPause();
