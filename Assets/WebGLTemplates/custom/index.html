@@ -47,6 +47,7 @@
   </script>
   <script>
     const canvas=document.querySelector("#unity-canvas");
+    var iframe = document.getElementById("loading-screen");
 
     function resizeCanvas() {
       const aspectRatio = 16 / 9; // Aspect ratio of the canvas
@@ -114,6 +115,25 @@
         
         document.body.appendChild(script);
         window.addEventListener('load', resizeCanvas());
+
+        window.addEventListener("message", function (event) {
+
+        if (event.data == "authToken") 
+        {
+          iframe.src = event.data.loaderUrl
+        }
+        // else if(event.data=="EXIT")
+        // {
+        //   console.log("run in exit event");
+
+        //   if (gameInstance != null) 
+        //   {
+        //   // gameInstance.SendMessage('UIMananger', 'openQuitpopUp');
+        //   gameInstance.SendMessage('SocketManager', 'CloseSocket');
+        //   }
+        // }
+
+        });
   </script>
 
   <!-- <script type="text/javascript">
