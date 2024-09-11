@@ -89,6 +89,7 @@ public class SocketIOManager : MonoBehaviour
         options.ReconnectionDelay = reconnectionDelay;
         options.Reconnection = true;
         //options.AutoConnect = false;
+        Debug.Log("checking external call Ekansh");
         Application.ExternalCall("window.parent.postMessage", "authToken", "*");
 
 #if UNITY_WEBGL && !UNITY_EDITOR

@@ -235,6 +235,7 @@ public class UIManager : MonoBehaviour
     //HACK: Something To Do Here
     private void SimulateClickByDefault()
     {
+        Debug.Log("checking build update Ekansh");
         Debug.Log("Awaken The Game...");
         m_AwakeGameButton.onClick.AddListener( () => { Debug.Log("Called The Game..."); } );
         m_AwakeGameButton.onClick.Invoke();
