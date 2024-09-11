@@ -61,7 +61,7 @@ public class SocketIOManager : MonoBehaviour
     private void Start()
     {
         //OpenWebsocket();
-        SetInit = false;
+        Debug.Log("checking Start call Ekansh");
         OpenSocket();
     }
 
@@ -81,6 +81,7 @@ public class SocketIOManager : MonoBehaviour
 
     private void OpenSocket()
     {
+        Debug.Log("checking OpenSocket call Ekansh");
         // Create and setup SocketOptions
         SocketOptions options = new SocketOptions();
         options.ReconnectionAttempts = maxReconnectionAttempts;
