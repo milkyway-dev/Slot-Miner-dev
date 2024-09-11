@@ -167,7 +167,9 @@ public class SocketIOManager : MonoBehaviour
         this.manager.Socket.On<string>("internalError", OnSocketError);
         this.manager.Socket.On<string>("alert", OnSocketAlert);
         this.manager.Socket.On<string>("AnotherDevice", OnSocketOtherDevice);
+
         // Start connecting to the server
+        this.manager.Open();
     }
 
     // Connected event handler implementation
