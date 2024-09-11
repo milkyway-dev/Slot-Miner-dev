@@ -63,6 +63,7 @@ public class SocketIOManager : MonoBehaviour
     private void Start()
     {
         //OpenWebsocket();
+        SetInit = false;
         OpenSocket();
     }
 
@@ -87,7 +88,7 @@ public class SocketIOManager : MonoBehaviour
         options.ReconnectionAttempts = maxReconnectionAttempts;
         options.ReconnectionDelay = reconnectionDelay;
         options.Reconnection = true;
-
+        options.AutoConnect = false;
         Application.ExternalCall("window.parent.postMessage", "authToken", "*");
 
 #if UNITY_WEBGL && !UNITY_EDITOR
