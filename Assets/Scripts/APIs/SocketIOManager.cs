@@ -33,9 +33,6 @@ public class SocketIOManager : MonoBehaviour
 
     private SocketManager manager;
 
-    [SerializeField]
-    internal JSHandler _jsManager;
-
     protected string SocketURI = null;
     protected string TestSocketURI = "https://game-crm-rtp-backend.onrender.com/";
 
@@ -56,6 +53,7 @@ public class SocketIOManager : MonoBehaviour
         //HACK: The below code is to disable the unity logs
         //Debug.unityLogger.logEnabled = false;
 
+        Debug.Log("checking awake call Ekansh");
         isLoading = true;
         SetInit = false;
     }
