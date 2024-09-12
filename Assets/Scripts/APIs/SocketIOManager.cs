@@ -56,13 +56,14 @@ public class SocketIOManager : MonoBehaviour
         Debug.Log("checking awake call Ekansh");
         isLoading = true;
         SetInit = false;
+        OpenSocket();
     }
 
     private void Start()
     {
         //OpenWebsocket();
         Debug.Log("checking Start call Ekansh");
-        OpenSocket();
+        //OpenSocket();
     }
 
     void ReceiveAuthToken(string jsonData)
