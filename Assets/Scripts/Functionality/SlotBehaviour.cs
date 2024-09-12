@@ -374,7 +374,8 @@ public class SlotBehaviour : MonoBehaviour
     {
         try
         {
-            BetCounter = SocketManager.initialData.Bets.Count - 1;
+            //BetCounter = SocketManager.initialData.Bets.Count - 1;
+            BetCounter = 0;
             LineCounter = SocketManager.initialData.LinesCount.Count - 1;
             if (TotalBet_text) TotalBet_text.text = (SocketManager.initialData.Bets[BetCounter]*SocketManager.initialData.Lines.Count).ToString();
             if (Lines_text) Lines_text.text = SocketManager.initialData.Lines.Count.ToString();
