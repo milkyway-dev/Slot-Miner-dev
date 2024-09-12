@@ -3792,7 +3792,8 @@ MonoBehaviour:
   freeSpinBar: {fileID: 1541122198}
   freeSpinBarHandle: {fileID: 0}
   freeSpinCount: {fileID: 738443223}
-  FreeSpin_Text: {fileID: 0}
+  FreeSpin_Text: {fileID: 233234609}
+  Wild_Text: {fileID: 2131915711}
   FreeSpinPopup_Object: {fileID: 1486611076}
   m_AwakeGameButton: {fileID: 1274097741}
 --- !u!1 &387967677
@@ -17313,7 +17314,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1500498278}
   m_HandleRect: {fileID: 1854569213}
   m_Direction: 2
-  m_Value: 0.99975246
+  m_Value: 0.9997524
   m_Size: 0.19260122
   m_NumberOfSteps: 0
   m_OnValueChanged:

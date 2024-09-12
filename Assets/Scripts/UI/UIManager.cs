@@ -121,6 +121,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform freeSpinBarHandle;
     [SerializeField] private TMP_Text freeSpinCount;
     [SerializeField] private TMP_Text FreeSpin_Text;
+    [SerializeField] private TMP_Text Wild_Text;
     [SerializeField] protected internal GameObject FreeSpinPopup_Object;
     //[SerializeField] private Button FreeSpin_Button;
 
@@ -264,7 +265,7 @@ public class UIManager : MonoBehaviour
 
     private void PopulateSymbolsPayout(Paylines paylines)
     {
-        for (int i = 0; i < SymbolsText.Length - 2; i++)
+        for (int i = 0; i < SymbolsText.Length; i++)
         {
             string text = null;
 
@@ -281,65 +282,28 @@ public class UIManager : MonoBehaviour
                 text += "\n3x - " + paylines.symbols[i].Multiplier[2][0];
             }
 
-
+            Debug.Log(string.Concat("<color=blue><b>", text, "</b></color>"));
             if (SymbolsText[i]) SymbolsText[i].text = text;
         }
 
+
         for (int i = 0; i < paylines.symbols.Count; i++)
         {
-            if (paylines.symbols[i].Name.ToUpper() == "JACKPOT")
+            switch (paylines.symbols[i].Name.ToUpper())
             {
-                if (Jackpot_Text) Jackpot_Text.text = "Jackpot: Mega win triggered by 5 Jackpot symbols on a pay line.\nPayout: <color=yellow>" + paylines.symbols[i].defaultAmount;
-                continue;
+                case "JACKPOT":
+                    if (Jackpot_Text) Jackpot_Text.text = paylines.symbols[i].description.ToString();
+                    Debug.Log(string.Concat("<color=blue><b>", "JACKPOT", "</b></color>"));
+                    break;
+                case "FREESPIN":
+                    if (FreeSpin_Text) FreeSpin_Text.text = paylines.symbols[i].description.ToString();
+                    Debug.Log(string.Concat("<color=blue><b>", "FREESPIN", "</b></color>"));
+                    break;
+                case "WILD":
+                    if (Wild_Text) Wild_Text.text = paylines.symbols[i].description.ToString();
+                    Debug.Log(string.Concat("<color=blue><b>", "WILD", "</b></color>"));
+                    break;
             }
-            if (paylines.symbols[i].Name.ToUpper() == "FREESPIN")
-            {
-                if (FreeSpin_Text) FreeSpin_Text.text = paylines.symbols[i].description.ToString();
-            }
-
-            string text = null;
-            if (paylines.symbols[i].ID == 10)
-            {
-
-
-                if (paylines.symbols[i].Multiplier[0][0] != 0)
-                {
-                    text += "5x - " + paylines.symbols[i].Multiplier[0][0];
-                }
-                if (paylines.symbols[i].Multiplier[1][0] != 0)
-                {
-                    text += "\n4x - " + paylines.symbols[i].Multiplier[1][0];
-                }
-                if (paylines.symbols[i].Multiplier[2][0] != 0)
-                {
-                    text += "\n3x - " + paylines.symbols[i].Multiplier[2][0];
-                }
-
-
-                if (SymbolsText[7]) SymbolsText[7].text = text;
-            }
-            if (paylines.symbols[i].ID == 11)
-            {
-
-
-                if (paylines.symbols[i].Multiplier[0][0] != 0)
-                {
-                    text += "5x - " + paylines.symbols[i].Multiplier[0][0];
-                }
-                if (paylines.symbols[i].Multiplier[1][0] != 0)
-                {
-                    text += "\n4x - " + paylines.symbols[i].Multiplier[1][0];
-                }
-                if (paylines.symbols[i].Multiplier[2][0] != 0)
-                {
-                    text += "\n3x - " + paylines.symbols[i].Multiplier[2][0];
-                }
-
-
-                if (SymbolsText[8]) SymbolsText[8].text = text;
-            }
-
-
         }
     }
 
