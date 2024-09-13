@@ -190,31 +190,31 @@ public class UIManager : MonoBehaviour
         // if (AboutExit_Button) AboutExit_Button.onClick.AddListener(delegate { ClosePopup(AboutPopup_Object); });
 
         if (Quit_button) Quit_button.onClick.RemoveAllListeners();
-        if (Quit_button) Quit_button.onClick.AddListener(delegate { OpenPopup(QuitPopupObject); });
+        if (Quit_button) Quit_button.onClick.AddListener(delegate { OpenPopup(QuitPopupObject); if (audioController) audioController.PlayButtonAudio(); });
 
         if (no_button) no_button.onClick.RemoveAllListeners();
-        if (no_button) no_button.onClick.AddListener(delegate { if(!isExit) ClosePopup(QuitPopupObject); });
+        if (no_button) no_button.onClick.AddListener(delegate { if(!isExit) ClosePopup(QuitPopupObject); if (audioController) audioController.PlayButtonAudio(); });
 
         if (cancel_button) cancel_button.onClick.RemoveAllListeners();
-        if (cancel_button) cancel_button.onClick.AddListener(delegate { if(!isExit) ClosePopup(QuitPopupObject); });
+        if (cancel_button) cancel_button.onClick.AddListener(delegate { if(!isExit) ClosePopup(QuitPopupObject); if (audioController) audioController.PlayButtonAudio(); });
 
         if (yes_button) yes_button.onClick.RemoveAllListeners();
         if (yes_button) yes_button.onClick.AddListener(CallOnExitFunction);
 
         if (Paytable_Button) Paytable_Button.onClick.RemoveAllListeners();
-        if (Paytable_Button) Paytable_Button.onClick.AddListener(delegate { OpenPopup(PaytablePopup_Object); });
+        if (Paytable_Button) Paytable_Button.onClick.AddListener(delegate { OpenPopup(PaytablePopup_Object); if (audioController) audioController.PlayButtonAudio(); });
 
         if (PaytableExit_Button) PaytableExit_Button.onClick.RemoveAllListeners();
-        if (PaytableExit_Button) PaytableExit_Button.onClick.AddListener(delegate { ClosePopup(PaytablePopup_Object); });
+        if (PaytableExit_Button) PaytableExit_Button.onClick.AddListener(delegate { ClosePopup(PaytablePopup_Object); if (audioController) audioController.PlayButtonAudio(); });
 
         if (Setting_button) Setting_button.onClick.RemoveAllListeners();
-        if (Setting_button) Setting_button.onClick.AddListener(delegate { OpenPopup(settingObject); });
+        if (Setting_button) Setting_button.onClick.AddListener(delegate { OpenPopup(settingObject); if (audioController) audioController.PlayButtonAudio(); });
 
         if (LBExit_Button) LBExit_Button.onClick.RemoveAllListeners();
-        if (LBExit_Button) LBExit_Button.onClick.AddListener(delegate { ClosePopup(LBPopup_Object); });
+        if (LBExit_Button) LBExit_Button.onClick.AddListener(delegate { ClosePopup(LBPopup_Object); if (audioController) audioController.PlayButtonAudio(); });
 
         if (Setting_exit_button) Setting_exit_button.onClick.RemoveAllListeners();
-        if (Setting_exit_button) Setting_exit_button.onClick.AddListener(delegate { ClosePopup(settingObject); });
+        if (Setting_exit_button) Setting_exit_button.onClick.AddListener(delegate { ClosePopup(settingObject); if (audioController) audioController.PlayButtonAudio(); });
 
         if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.RemoveAllListeners();
         if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.AddListener(CallOnExitFunction);
@@ -481,7 +481,7 @@ public class UIManager : MonoBehaviour
     }
     private void OpenPopup(GameObject Popup)
     {
-        if (audioController) audioController.PlayButtonAudio();
+        //if (audioController) audioController.PlayButtonAudio();
         if (Popup) Popup.SetActive(true);
         PopupActivatedCount++;
         Debug.Log(string.Concat("<color=red><b>", PopupActivatedCount, "</b></color>"));
@@ -500,7 +500,7 @@ public class UIManager : MonoBehaviour
 
     private void ClosePopup(GameObject Popup)
     {
-        if (audioController) audioController.PlayButtonAudio();
+        //if (audioController) audioController.PlayButtonAudio();
         if (Popup) Popup.SetActive(false);
         if(PopupActivatedCount > 0)
         {

@@ -17314,7 +17314,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1500498278}
   m_HandleRect: {fileID: 1854569213}
   m_Direction: 2
-  m_Value: 0.9997524
+  m_Value: 0.99975246
   m_Size: 0.19260122
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -23699,11 +23699,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 157f8cc51705d46f0b5bb884bcc24097, type: 3}
   - {fileID: 21300000, guid: 4521be2f16a4540ecb756cbe3803738d, type: 3}
   - {fileID: 21300000, guid: 205f8ddb37ef44a94b3685475f9b4ae8, type: 3}
+  - {fileID: 21300000, guid: b0498658b49bc45658293f79cd0ce7a3, type: 3}
+  - {fileID: 1005788871, guid: 3729d899876624378adadcbc5ab0f0c3, type: 3}
   - {fileID: 21300000, guid: bdda8dd55c61040bf9c69ad5677b1794, type: 3}
   - {fileID: 458570561, guid: 565b92a7489e048edb0ed93d34093e43, type: 3}
   - {fileID: 563638117, guid: 5db6d9ae8112e46288e1d528670bf7e5, type: 3}
-  - {fileID: 21300000, guid: b0498658b49bc45658293f79cd0ce7a3, type: 3}
-  - {fileID: 1005788871, guid: 3729d899876624378adadcbc5ab0f0c3, type: 3}
   images:
   - slotImages:
     - {fileID: 4143827152041420349}

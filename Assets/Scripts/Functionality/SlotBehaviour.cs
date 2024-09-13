@@ -240,6 +240,7 @@ public class SlotBehaviour : MonoBehaviour
         {
             //if (FSnum_text) FSnum_text.text = spins.ToString();
             //if (FSBoard_Object) FSBoard_Object.SetActive(true);
+
             if (uiManager.FreeSpinPopup_Object) uiManager.FreeSpinPopup_Object.SetActive(true);
             IsFreeSpin = true;
             ToggleButtonGrp(false);
@@ -256,6 +257,9 @@ public class SlotBehaviour : MonoBehaviour
     private IEnumerator FreeSpinCoroutine(int spinchances)
     {
         int i = 0;
+
+        yield return new WaitForSeconds(0.6f);
+
         while (i <= spinchances)
         {
             StartSlots(IsAutoSpin);
