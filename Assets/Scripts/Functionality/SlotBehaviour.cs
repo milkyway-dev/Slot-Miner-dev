@@ -503,6 +503,7 @@ public class SlotBehaviour : MonoBehaviour
         CheckPayoutLineBackend(SocketManager.resultData.linesToEmit, SocketManager.resultData.FinalsymbolsToEmit, SocketManager.resultData.jackpot);
         KillAllTweens();
 
+        currentBalance = SocketManager.playerdata.Balance;
 
         CheckPopups = true;
 
@@ -530,7 +531,6 @@ public class SlotBehaviour : MonoBehaviour
         yield return new WaitUntil(() => !CheckPopups);
         if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString();
         if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString();
-        currentBalance = SocketManager.playerdata.Balance;
 
         if (!IsAutoSpin && !IsFreeSpin)
         {
