@@ -356,9 +356,9 @@ public class SlotBehaviour : MonoBehaviour
             }
         }
 
+        currentTotalBet = SocketManager.initialData.Bets[BetCounter] * SocketManager.initialData.Lines.Count;
         if(BetPerLine_text) BetPerLine_text.text=SocketManager.initialData.Bets[BetCounter].ToString();
         if (TotalBet_text) TotalBet_text.text = (SocketManager.initialData.Bets[BetCounter]*SocketManager.initialData.Lines.Count).ToString();
-        currentTotalBet = SocketManager.initialData.Bets[BetCounter] * Lines;
         CompareBalance();
     }
 
